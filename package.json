@@ -1,0 +1,36 @@
+{
+  "name": "squarespace-cli",
+  "version": "0.0.097",
+  "description": "A CLI for doing random stuff with Squarespace.",
+  "main": "client",
+  "directories": {
+    "bin": "./bin"
+  },
+  "bin": {
+    "sqs": "./squarespace.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Squarefront/squarespace-cli.git"
+  },
+  "keywords": [
+    "squarespace",
+    "cli"
+  ],
+  "author": "Jason Barone",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Squarefront/squarespace-cli/issues"
+  },
+  "homepage": "https://github.com/Squarefront/squarespace-cli#readme",
+  "devDependencies": {},
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "commander": "^2.9.0",
+    "jsonfile": "^2.3.1",
+    "node-fetch": "^1.6.0"
+  }
+}
