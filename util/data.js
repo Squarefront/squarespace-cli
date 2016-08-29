@@ -37,8 +37,7 @@ const exportPage = function ( domain, format, filename, params ) {
   const url = `${domain}`;
   const opts = {
     method: "GET",
-    headers: {
-    }
+    headers: { }
   };
 
   if ( dataFormat === "json" ) {
@@ -90,8 +89,8 @@ const extendObject = function (target, arrow) {
       ret[ i ] = arrow[ i ];
     }
 
-      // Merge Objects
-      // This could `clone` as well, but is better for merging 2 objects
+  // Merge Objects
+  // This could `clone` as well, but is better for merging 2 objects
   } else {
     for (i in arrow) {
       if (arrow.hasOwnProperty(i)) {
