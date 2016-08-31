@@ -1,6 +1,6 @@
 {
   "name": "squarespace-cli",
-  "version": "0.0.098",
+  "version": "0.0.100",
   "description": "A CLI for doing random stuff with Squarespace.",
   "main": "client",
   "directories": {
@@ -33,8 +33,11 @@
     "co-prompt": "^1.0.0",
     "commander": "^2.9.0",
     "jsonfile": "^2.3.1",
+    "keytar": "^3.0.2",
     "nightmare": "^2.6.1",
     "nightmare-iframe-manager": "0.0.2",
-    "node-fetch": "^1.6.0"
+    "node-fetch": "^1.6.0",
+    "valid-url": "^1.0.9",
+    "winston": "^2.2.0"
   }
 }
