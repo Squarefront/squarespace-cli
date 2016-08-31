@@ -1,55 +1,43 @@
 #!/usr/bin/env node
 
-const co = require( "co" );
-const prompt = require( "co-prompt" );
+
+const chalk = require( "chalk" );
+const pkg = require( "./package.json" );
 const program = require( "commander" );
 
-const util = require( "./util");
 
-let clientMethod = null;
-let domain = null;
-let format = null;
-let filename = null;
+const sqsApiEndpoint = "https://squarespace.com/api";
+const client = {};
 
+client.cli = program;
+client.commands = require( "./commands" );
+client.apiEndpoints = {};
+client.apiEndpoints.squarespace = sqsApiEndpoint;
 
-/**
- * @method squarespace
- * @description Executes the Squarespace CLI.
- * @param {string} email The Squarespace email address.
- * @param {string} password The Squarespace password.
- */
-const execClient = function ( email, password ) {
-  const methodMap = {
-    create: util.account.createSite.bind(null, email, password),
-    export: util.data.exportPage.bind(null, domain, format, filename)
+program.version( `Squarespace CLI ${pkg.version}` );
+program.usage( "[options] [command]" );
+
+program.command( "create-site [options]" ).description( "(In dev) Create a new Base Template website.." );
+program.command( "export <url> [options]" ).description( "Export a Squarespace collection." );
+program.command( "export-sitemap <url> [options]" ).description( "Export your website's sitemap." );
+
+program.option( "-f, --format <format>", "Optional formats to export to." );
+program.option( "-fn, --filename <filename>", "Optional filename to save to." );
+program.option( "-save, --save", "Save credentials?" );
+
+program.action( ( cmd, primary, secondary ) => {
+  client.arguments = {
+    primaryArg: primary,
+    secondaryArg: secondary
   };
 
-  methodMap[ clientMethod ]();
-};
+  if ( cmd in client.commands ) {
+    client.commands[ cmd ]( client );
+  } else {
+    console.log( chalk.bold.red( "Error" ), chalk.bold( cmd ), "is not an Squarespace CLI command" );
+  }
+});
 
-program
-  .arguments( "<method>" )
-  .option( "-p, --page <url>", "A domain name url." )
-  .option( "-f, --format <format>", "The data format (json or html)." )
-  .option( "-fn, --filename <filename>", "The file name." )
-  .option( "-e, --email <email>", "Your Squarespace email address." )
-  .option( "-p, --password <password>", "Your Squarespace password." )
-  .action( ( method ) => {
-    clientMethod = method;
+program.parse( process.argv );
 
-    domain = program.page;
-    format = program.format;
-    filename = program.filename;
-
-    if ( method === "create" ) {
-      co( function* () {
-        const username = yield prompt( "username: " );
-        const password = yield prompt.password( "password: ");
-
-        execClient( username, password );
-      });
-    } else {
-      execClient();
-    }
-  })
-  .parse( process.argv );
+module.exports = client;
