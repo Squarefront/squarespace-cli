@@ -1,6 +1,6 @@
 {
   "name": "squarespace-cli",
-  "version": "0.0.101",
+  "version": "0.0.102",
   "description": "A CLI for doing random stuff with Squarespace.",
   "main": "client",
   "directories": {
