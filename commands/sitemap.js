@@ -25,7 +25,7 @@ const exportSitemap = function ( client ) {
 
     const date = new Date();
     const sitemapPath = "sitemap.xml";
-    const fileName = client.cli.filename || `sqsp_cli_${date.getFullYear()}_${date.getMonth()}_${date.getDay()}_${date.getHours()}${date.getMinutes()}${date.getSeconds()}${sitemapPath}`;
+    const fileName = client.cli.filename || `sqsp_cli_${date.getFullYear()}_${date.getMonth()}_${date.getDay()}_${date.getHours()}${date.getMinutes()}${date.getSeconds()}_${sitemapPath}`;
     const opts = {
       method: "GET",
       headers: { }
