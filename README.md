@@ -22,19 +22,29 @@ sqs -h
 #### Export Content
 Export a Squarespace page.
 
-I'm working on bulk exporting and automation.
+Bulk exporting is on the way.
 
 The CLI will export to your current working path. Run `pwd` in terminal to see your working directory.
 
 ```shell
 # export a page in HTML
-sqs export -p https://blog.squarespace.com
+sqs export https://blog.squarespace.com
 
 # export a page in JSON
-sqs export -p https://blog.squarespace.com -f json
+sqs export https://blog.squarespace.com -f json
 
 # export a page in JSON with filename foo.json
-sqs export -p https://blog.squarespace.com -f json --filename foo.json
+sqs export https://blog.squarespace.com -f json --filename foo.json
+```
+
+#### Export Sitemap
+Export your sitemap.xml file.
+
+Sitemap parsing is on the way.
+
+```shell
+# export sitemap
+sqs export-sitemap https://blog.squarespace.com
 ```
 
 #### Create a Squarespace Website
@@ -44,7 +54,7 @@ This is a work in progress. I'm having issues with the cookie crumb authenticati
 
 ```shell
 # create a new base template website
-sqs create
+sqs create-site
 ```
 
 
