@@ -8,7 +8,9 @@
 const chalk = require( "chalk" );
 const fs = require( "fs" );
 const fetch = require( "node-fetch" );
+const jsonfile = require( "jsonfile" );
 const validUrl = require( "valid-url" );
+const xml2js = require( "xml2js" );
 
 
 /**
@@ -24,25 +26,69 @@ const exportSitemap = function ( client ) {
   if ( validUrl.isUri( client.arguments.primaryArg ) ) {
 
     const date = new Date();
-    const sitemapPath = "sitemap.xml";
-    const fileName = client.cli.filename || `sqsp_cli_${date.getFullYear()}_${date.getMonth()}_${date.getDay()}_${date.getHours()}${date.getMinutes()}${date.getSeconds()}_${sitemapPath}`;
+    const sitemapPath = "sitemap";
+    const sitemapPathFull = "sitemap.xml";
+    const fileExtMap = {
+      json: ".json",
+      text: ".txt",
+      xml: ".xml"
+    };
+    const dataFormat = client.cli.format || "xml";
+    const fileFormat = client.cli.format ? fileExtMap[ client.cli.format ] : ".xml";
+    const fileName = client.cli.filename || `sqsp_cli_${date.getFullYear()}_${date.getMonth()}_${date.getDay()}_${date.getHours()}${date.getMinutes()}${date.getSeconds()}_${sitemapPath}${fileFormat}`;
+    // const url = `${client.cli.url}`;
+
     const opts = {
       method: "GET",
       headers: { }
     };
 
-    console.log( `${removeSlashes( client.arguments.primaryArg )}/${sitemapPath}` );
+    console.log( chalk.bold.yellow( "\nStatus" ), `Attempting to fetch sitemap for ${client.arguments.primaryArg}.
+    `);
 
-    return fetch( `${removeSlashes( client.arguments.primaryArg )}/${sitemapPath}` ).then( ( res ) => {
+    return fetch( `${removeSlashes( client.arguments.primaryArg )}/${sitemapPathFull}`, opts ).then( ( res ) => {
       return res.text();
     }).then( ( res ) => {
       const file = fileName;
+      const parser = new xml2js.Parser();
 
-      fs.writeFile(file, res, { spaces: 2 }, ( err ) => {
-        console.log( err );
-      });
-      console.log( res );
-      return res;
+      if ( dataFormat === "xml" ) {
+        fs.writeFile(file, res, {
+          spaces: 2
+        }, ( err ) => {
+          if ( err ) {
+            console.log( err );
+          }
+        });
+      }
+
+      if ( dataFormat === "json" ) {
+        parser.parseString( res, (err, result) => {
+          const json = JSON.stringify( result, null, '\t' );
+
+          fs.writeFile(file, json, { spaces: 2 }, ( err ) => {
+            console.log( err );
+          });
+        });
+      }
+
+      if ( dataFormat === "text" ) {
+        parser.parseString( res, (err, result) => {
+          console.log( res );
+          console.log( JSON.stringify( result ) );
+          fs.writeFile(file, JSON.stringify( result ), {
+            spaces: 2
+          }, ( err ) => {
+            if ( err ) {
+              console.log( err );
+            }
+          });
+        });
+      }
+
+    }).then( () => {
+      console.log( chalk.bold.green( "Success" ), `Successfully exported sitemap for ${client.arguments.primaryArg}.
+    `);
     }).catch( ( err ) => {
       console.log( chalk.bold.red( "Error" ), chalk.bold( "export" ), `failed to export, check your url to confirm it looks OK.
       ` );
