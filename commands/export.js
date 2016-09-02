@@ -17,11 +17,8 @@ const validUrl = require( "valid-url" );
  * @memberof commands
  * @description Export a Squarespace collection.
  * @param {object} client The CLI client.
- * @returns {Promise} Export response Promise.
  */
 const exportPage = function ( client ) {
-  console.log(client);
-
   if ( validUrl.isUri( client.arguments.primaryArg ) ) {
 
     // const params = null;
@@ -49,31 +46,35 @@ const exportPage = function ( client ) {
       .join("&")
       .replace(/%20/g, "+");
 
-    return fetch( `${client.arguments.primaryArg}?${urlParameters}`, opts ).then( ( res ) => {
+    fetch( `${client.arguments.primaryArg}?${urlParameters}`, opts ).then( ( res ) => {
       return dataFormat === "json" ? res.json() : res.text();
     }).then( ( res ) => {
       const file = fileName;
 
       if ( dataFormat === "json" ) {
         jsonfile.writeFile(file, res, { spaces: 2 }, ( err ) => {
-          console.log( err );
+          if ( err ) {
+            console.log( err );
+          }
         });
       } else {
         fs.writeFile(file, res, { spaces: 2 }, ( err ) => {
-          console.log( err );
+          if ( err ) {
+            console.log( err );
+          }
         });
       }
-      return res;
+    }).then( () => {
+      console.log( chalk.bold.green( "Success" ), `Successfully exported ${client.arguments.primaryArg} to ${dataFormat}.
+      `);
     }).catch( ( err ) => {
       console.log( chalk.bold.red( "Error" ), chalk.bold( "export" ), `failed to export, check your url to confirm it looks OK.
       ` );
       console.log( chalk.bold.red( "Response" ), `${err.name} ${err.message}` );
     });
-
   } else {
     console.log( chalk.bold.red( "Error" ), chalk.bold( "export" ), "requires a valid url to work. Use sqs -h to more info." );
   }
-
 };
 
 
