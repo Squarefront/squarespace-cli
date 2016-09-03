@@ -209,8 +209,8 @@
             "unix"
         ],
         "max-nested-callbacks": [
-            2,
-            2
+            4,
+            4
         ],
         "new-cap": 1,
         "new-parens": 2,
