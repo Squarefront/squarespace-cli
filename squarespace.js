@@ -17,7 +17,7 @@ client.apiEndpoints.squarespace = sqsApiEndpoint;
 program.version( `Squarespace CLI ${pkg.version}` );
 program.usage( "[options] [command]" );
 
-program.command( "create-site [options]" ).description( "(In dev) Create a new Base Template website.." );
+program.command( "create-site [options]" ).description( "(In dev) Create a new Base Template website." );
 program.command( "export <url> [options]" ).description( "Export a Squarespace collection." );
 program.command( "export-sitemap <url> [options]" ).description( "Export your website's sitemap." );
 
@@ -34,7 +34,7 @@ program.action( ( cmd, primary, secondary ) => {
   if ( cmd in client.commands ) {
     client.commands[ cmd ]( client );
   } else {
-    console.log( chalk.bold.red( "Error" ), chalk.bold( cmd ), "is not an Squarespace CLI command" );
+    console.log( chalk.bold.red( "Error" ), chalk.bold( cmd ), "is not a Squarespace CLI command." );
   }
 });
 
