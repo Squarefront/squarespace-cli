@@ -38,13 +38,18 @@ sqs export https://blog.squarespace.com --filename foo.json
 ```
 
 #### Export Sitemap
-Export your sitemap.xml file.
+Export your sitemap in various formats..
 
-Sitemap parsing is on the way.
 
 ```shell
-# export sitemap
+# export full sitemap in xml
 sqs export-sitemap https://blog.squarespace.com
+
+# export ful sitemap in json
+sqs export-sitemap https://blog.squarespace.com -f json
+
+# export sitemap urls in plain text
+sqs export-sitemap https://blog.squarespace.com -f text
 ```
 
 #### Create a Squarespace Website
