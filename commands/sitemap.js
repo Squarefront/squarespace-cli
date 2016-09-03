@@ -64,21 +64,23 @@ const exportSitemap = function ( client ) {
           const json = JSON.stringify( result, null, "\t" );
 
           fs.writeFile(file, json, { spaces: 2 }, ( err ) => {
-            console.log( err );
+            if ( err ) {
+              console.log( err );
+            }
           });
         });
       }
 
       if ( dataFormat === "text" ) {
         parser.parseString( res, (err, result) => {
-          console.log( res );
-          console.log( JSON.stringify( result ) );
-          fs.writeFile(file, JSON.stringify( result ), {
-            spaces: 2
-          }, ( err ) => {
-            if ( err ) {
-              console.log( err );
-            }
+          result.urlset.url.forEach( ( url ) => {
+            const urlWithBreak = `${url.loc}\n`;
+
+            fs.appendFile(file, urlWithBreak, ( err ) => {
+              if ( err ) {
+                console.log( err );
+              }
+            });
           });
         });
       }
